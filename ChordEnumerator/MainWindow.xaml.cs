@@ -56,19 +56,15 @@ namespace ChordEnumerator
                 new KeyAndName(MusicKey.Hmoll, "BMinor" ),
 
                 new KeyAndName(MusicKey.CISdur, "CSharpMajor" ),
-                new KeyAndName(MusicKey.DESdur, "DFlatMajor" ),
                 new KeyAndName(MusicKey.ESdur, "EFlatMajor" ),
                 new KeyAndName(MusicKey.FISdur, "FSharpMajor" ),
-                new KeyAndName(MusicKey.GESdur, "GFlatMajor" ),
                 new KeyAndName(MusicKey.ASdur, "AFlatMajor" ),
                 new KeyAndName(MusicKey.Bdur, "BFlatMajor" ),
 
                 new KeyAndName(MusicKey.CISmoll, "CSharpMinor" ),
                 new KeyAndName(MusicKey.DISmoll, "DSharpMinor" ),
-                new KeyAndName(MusicKey.ESmoll, "EFlatMinor" ),
                 new KeyAndName(MusicKey.FISmoll, "FSharpMinor" ),
                 new KeyAndName(MusicKey.GISmoll, "GSharpMinor" ),
-                new KeyAndName(MusicKey.ASmoll, "AFlatMinor" ),
                 new KeyAndName(MusicKey.Bmoll, "BFlatMinor" ),
             };
 
@@ -80,6 +76,7 @@ namespace ChordEnumerator
                     var mm = Chord.ChordListToMidiFile(chords, 60);
                     mm.Write(bw);
                 }
+
             }
         }
 
