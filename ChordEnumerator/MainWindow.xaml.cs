@@ -27,6 +27,62 @@ namespace ChordEnumerator
             InitializeComponent();
         }
 
+        class KeyAndName {
+            public MusicKey k;
+            public string name;
+
+            public KeyAndName(MusicKey aK, string aName) {
+                k = aK;
+                name = aName;
+            }
+        };
+
+        private void GenerateChordMidi(ChordType ct, string desc) {
+            var keys = new KeyAndName[] {
+                new KeyAndName(MusicKey.Cdur, "CMajor" ),
+                new KeyAndName(MusicKey.Ddur, "DMajor" ),
+                new KeyAndName(MusicKey.Edur, "EMajor" ),
+                new KeyAndName(MusicKey.Fdur, "FMajor" ),
+                new KeyAndName(MusicKey.Gdur, "GMajor" ),
+                new KeyAndName(MusicKey.Adur, "AMajor" ),
+                new KeyAndName(MusicKey.Hdur, "BMajor" ),
+
+                new KeyAndName(MusicKey.Cmoll, "CMinor" ),
+                new KeyAndName(MusicKey.Dmoll, "DMinor" ),
+                new KeyAndName(MusicKey.Emoll, "EMinor" ),
+                new KeyAndName(MusicKey.Fmoll, "FMinor" ),
+                new KeyAndName(MusicKey.Gmoll, "GMinor" ),
+                new KeyAndName(MusicKey.Amoll, "AMinor" ),
+                new KeyAndName(MusicKey.Hmoll, "BMinor" ),
+
+                new KeyAndName(MusicKey.CISdur, "CSharpMajor" ),
+                new KeyAndName(MusicKey.DESdur, "DFlatMajor" ),
+                new KeyAndName(MusicKey.ESdur, "EFlatMajor" ),
+                new KeyAndName(MusicKey.FISdur, "FSharpMajor" ),
+                new KeyAndName(MusicKey.GESdur, "GFlatMajor" ),
+                new KeyAndName(MusicKey.ASdur, "AFlatMajor" ),
+                new KeyAndName(MusicKey.Bdur, "BFlatMajor" ),
+
+                new KeyAndName(MusicKey.CISmoll, "CSharpMinor" ),
+                new KeyAndName(MusicKey.DISmoll, "DSharpMinor" ),
+                new KeyAndName(MusicKey.ESmoll, "EFlatMinor" ),
+                new KeyAndName(MusicKey.FISmoll, "FSharpMinor" ),
+                new KeyAndName(MusicKey.GISmoll, "GSharpMinor" ),
+                new KeyAndName(MusicKey.ASmoll, "AFlatMinor" ),
+                new KeyAndName(MusicKey.Bmoll, "BFlatMinor" ),
+            };
+
+            foreach (var k in keys) {
+                ct.musicKey = k.k;
+                using (var bw = new BinaryWriter(File.Open(string.Format("out/{0}{1}.mid", k.name, desc), FileMode.Create))) {
+                    ChordListGenerator clg = new ChordListGenerator(ct);
+                    var chords = clg.Generate();
+                    var mm = Chord.ChordListToMidiFile(chords, 60);
+                    mm.Write(bw);
+                }
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ChordType ct = new ChordType();
@@ -43,14 +99,10 @@ namespace ChordEnumerator
             ct.alteration = AlterationType.None;
             ct.addedTone = AddedToneType.None;
 
-            ChordListGenerator clg = new ChordListGenerator(ct);
-            var chords = clg.Generate();
+            GenerateChordMidi(ct, "Triad");
 
-            var mm = Chord.ChordListToMidiFile(chords, 60);
-
-            using (var bw = new BinaryWriter(File.Open("CMajorTriad.mid", FileMode.Create))) {
-                mm.Write(bw);
-            }
+            ct.numberOfNotes = NumberOfNotes.Seventh;
+            GenerateChordMidi(ct, "Seventh");
 
             Console.WriteLine("Done.");
 
