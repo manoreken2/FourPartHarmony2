@@ -70,7 +70,7 @@ namespace ChordEnumerator
 
             foreach (var k in keys) {
                 ct.musicKey = k.k;
-                using (var bw = new BinaryWriter(File.Open(string.Format("out/{0}{1}.mid", k.name, desc), FileMode.Create))) {
+                using (var bw = new BinaryWriter(File.Open(string.Format("midi/{0}{1}.mid", k.name, desc), FileMode.Create))) {
                     ChordListGenerator clg = new ChordListGenerator(ct);
                     var chords = clg.Generate();
                     var mm = Chord.ChordListToMidiFile(chords, 60);
