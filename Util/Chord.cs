@@ -680,7 +680,7 @@ namespace FourPartHarmony2
             CheckChordPosition();
             SetChordFunctionRoughly();
 
-            AddSelfDescription();
+            //AddSelfDescription();
             EvalChordVerdictInfo();
         }
 
@@ -1715,6 +1715,7 @@ namespace FourPartHarmony2
             return GetPitch(part1).GetIntervalType(GetPitch(part0));
         }
 
+        /*
         /// <summary>
         /// この和音についての説明を付加する。
         /// </summary>
@@ -1722,5 +1723,7 @@ namespace FourPartHarmony2
             UpdateVerdict(new Verdict(VerdictValue.Info, VerdictReason.InfoChord, ct.construction.ToString(),
                 ChordCategory.GetChordOverviewText(ct)));
         }
+
+        */
     }
 }

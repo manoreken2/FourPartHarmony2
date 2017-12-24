@@ -96,6 +96,7 @@ namespace FourPartHarmony2
         private static readonly ChordCategoryInfo ccNaturalMinorV;
         private static readonly ChordCategoryInfo ccNaturalMinorV7;
 
+        /*
         public static string
         GetChordOverviewText(ChordType ct) {
             switch (ct.alteration) {
@@ -132,7 +133,7 @@ namespace FourPartHarmony2
             }
 
             if (ct.has固有VII) {
-                /* 短調である */
+                // 短調である
                 System.Diagnostics.Debug.Assert(ct.chordDegree == CD.V);
                 System.Diagnostics.Debug.Assert(ct.omission == Omission.None);
                 return Properties.Resources.DescNaturalMinorV;
@@ -204,6 +205,7 @@ namespace FourPartHarmony2
                 return Properties.Resources.Desc基I;
             }
         }
+    */
 
         public static ChordConstructionType
         GetConstructionTypeFromChordType(ChordType ct) {

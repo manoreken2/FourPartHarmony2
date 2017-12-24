@@ -11,7 +11,7 @@ namespace FourPartHarmony2
         public ChordType ChordType { get { return ct; } }
 
         private List<Chord> chordList;
-        private readonly List<LnDeg> chordLnDeg123467; ///< I, II, III, IV, V, VI, VII ドレミファソラシ
+        private readonly List<LnDeg> chordLnDeg123467; ///< I, II, III, IV, VI, VII ドレミファラシ
         private readonly List<LnDeg> chordLnDeg5;      ///< V、VII、II, IV, VI
 
         public ChordListGenerator(ChordType chordType) {
@@ -133,6 +133,8 @@ namespace FourPartHarmony2
         /// <returns></returns>
         public LnDegInversion GetChordLnDegInversion(Inversion inversion)
         {
+            System.Diagnostics.Debug.Assert(0<= (int)inversion);
+
             switch (ct.chordDegree) {
             case CD.I:
             case CD.II:
@@ -656,9 +658,10 @@ namespace FourPartHarmony2
         /// <summary>
         /// 和音の配置の可能性を列挙し、それぞれの和音の妥当性をチェックする。
         /// </summary>
-        public void Generate()
+        public List<Chord> Generate()
         {
             EnumerateAllChords();
+            return chordList;
         }
 
         public List<Chord> GetChordList()

@@ -301,8 +301,6 @@ namespace FourPartHarmony2
             mciSendString("play track", new StringBuilder(), 0, new IntPtr(0));
         }
 
-        //static int deviceId = 0;
-
         public void PlayNow()
         {
             Stop();
@@ -311,16 +309,6 @@ namespace FourPartHarmony2
                 = new BinaryWriter(File.Open(tempPath, FileMode.Create))) {
                 Write(bw);
             }
-
-            /*
-            SetDevice(deviceId);
-
-            Console.WriteLine("deviceId=" + deviceId);
-            ++deviceId;
-
-            SetPortMapper();
-            */
-
 
             Play(tempPath);
         }
