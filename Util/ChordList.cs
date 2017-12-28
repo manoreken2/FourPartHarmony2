@@ -14,7 +14,11 @@ namespace FourPartHarmony2
         private readonly List<LnDeg> chordLnDeg123467; ///< I, II, III, IV, VI, VII ドレミファラシ
         private readonly List<LnDeg> chordLnDeg5;      ///< V、VII、II, IV, VI
 
+        public bool CompleteDeg { get; set; }
+
         public ChordListGenerator(ChordType chordType) {
+            CompleteDeg = false;
+
             this.ct = chordType;
             chordList = new List<Chord>();
 
@@ -59,6 +63,7 @@ namespace FourPartHarmony2
                 case CD.V:
                     // V_V 下方変位 第5音(II)がフラットになる
                     chordLnDeg5[2] = new LnDeg(chordLnDeg123467[1].LetterName.Flat(), 2);
+                    CompleteDeg = true;
                     break;
                 default:
                     System.Diagnostics.Debug.Assert(false);
@@ -96,6 +101,7 @@ namespace FourPartHarmony2
                 case CD.V_V:
                     // V上方変位 第5音がシャープになる(III巻p.224)
                     chordLnDeg5[2] = new LnDeg(chordLnDeg123467[1].LetterName.Sharp(), 2);
+                    CompleteDeg = true;
                     break;
                 case CD.IV:
                     // IV+6, IV+46の和音 第6音(II)がシャープになる(III巻p.226)
@@ -164,7 +170,8 @@ namespace FourPartHarmony2
         /// <param name="variation">-1を渡すと、構成音列のバリエーションの数を戻すだけ</param>
         /// <param name="standard"></param>
         /// <returns>構成音列の構成音列のバリエーションの数</returns>
-        private int ObtainUpper3LnDeg(LnDegInversion bas, int variation, out List<LnDegInversion> upper3, out bool standard)
+        private int ObtainUpper3LnDeg(LnDegInversion bas, int variation,
+                out List<LnDegInversion> upper3, out bool standard)
         {
             int count = 0; //< 構成音列のバリエーションの数
             standard = false;
@@ -228,9 +235,15 @@ namespace FourPartHarmony2
                     // 3和音に根音省略形体はない。
                     return 0;
                 }
+
                 switch (bas.Inversion) {
                 case Inversion.根音:
                     count = 5; // 5通り
+                    if (CompleteDeg) {
+                        // 第5音省略不可なので3通り。
+                        count = 3;
+                    }
+
                     switch (variation) {
                     case -1:
                         return count;
@@ -267,6 +280,11 @@ namespace FourPartHarmony2
                     break;
                 case Inversion.第3音:
                     count = 5; // 5通り
+                    if (CompleteDeg) {
+                        // 第5音省略不可なので3通り。
+                        count = 3;
+                    }
+
                     switch (variation) {
                     case -1:
                         return count;
@@ -344,18 +362,22 @@ namespace FourPartHarmony2
                         return 0; // ない
                     } else {
                         count = 3; // 3通り
+                        if (CompleteDeg) {
+                            count = 1;
+                        }
+
                         switch (variation) {
                         case -1:
                             return count;
-                        case 0: // ドミシ
-                            upper3.Add(GetChordLnDegInversion(Inversion.根音));
+                        case 0: // ミソシ
                             upper3.Add(GetChordLnDegInversion(Inversion.第3音));
+                            upper3.Add(GetChordLnDegInversion(Inversion.第5音));
                             upper3.Add(GetChordLnDegInversion(Inversion.第7音));
                             standard = true;
                             break;
-                        case 1: // ミソシ
+                        case 1: // ドミシ
+                            upper3.Add(GetChordLnDegInversion(Inversion.根音));
                             upper3.Add(GetChordLnDegInversion(Inversion.第3音));
-                            upper3.Add(GetChordLnDegInversion(Inversion.第5音));
                             upper3.Add(GetChordLnDegInversion(Inversion.第7音));
                             standard = true;
                             break;
@@ -388,6 +410,10 @@ namespace FourPartHarmony2
                         }
                     } else {
                         count = 3; // 3通り
+                        if (CompleteDeg) {
+                            count = 1;
+                        }
+
                         switch (variation) {
                         case -1:
                             return count;
@@ -416,6 +442,9 @@ namespace FourPartHarmony2
                 case Inversion.第5音:
                     if (Omission.First == ct.omission) {
                         count = 2; // 2通り
+                        if (CompleteDeg) {
+                            count = 1;
+                        }
                         switch (variation) {
                         case -1:
                             return count;
@@ -470,6 +499,9 @@ namespace FourPartHarmony2
                         }
                     } else {
                         count = 3; // 3通り
+                        if (CompleteDeg) {
+                            count = 1;
+                        }
                         switch (variation) {
                         case -1:
                             return count;
