@@ -26,6 +26,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Learn.py" />
+    <Compile Include="Predictor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Run.py">
       <SubType>Code</SubType>
     </Compile>
