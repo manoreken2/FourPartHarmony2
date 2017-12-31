@@ -14,6 +14,9 @@ class Predictor(object):
         self.classifier.fit(X_train, y_train)
 
     def predict(self, x):
+        return (self.classifier.predict(x), self.classifier.decision_function(x))
+
+    def predict1(self, x):
         return self.classifier.predict(x)
 
     def save(self, path):

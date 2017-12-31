@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # 日本語
 
 import numpy as np
@@ -20,14 +20,15 @@ def normalizeArray(a):
         vMax = 1.0
     return a / vMax
 
-def wav_start_to_freq(path):
+def wav_pos_to_freq(path, posSample):
     #70Hzと74Hzの区別がつく分解能が要る。
     FR=44100
     T=1.0/FR
     N=16384
 
     rate, data = wavfile.read(path,True)
-    data=np.resize(data,N)
+    #data = np.resize(data,N)
+    data= data[posSample:posSample+N]
 
     # 16bit int format -> float64
     y=data.astype(np.float)
@@ -49,11 +50,21 @@ def wav_start_to_freq(path):
 
     return result
 
+def writeLine(fp, idx, freq):
+    fp.write('%d' % idx)
+    for v in freq:
+        fp.write(',%f' % (v))
+    fp.write('\n')
+
 def generate(wavDirPath, labelPath, datasetPath):
     f = []
     for (dirpath, dirnames, filenames) in walk(wavDirPath):
         f.extend(filenames)
 
+    f = sorted(f)
+
+    #print('', f)
+    
     i=0
     numberToChordName = {}
     chordNameToNumber = {}
@@ -64,13 +75,14 @@ def generate(wavDirPath, labelPath, datasetPath):
             numberToChordName[ i ] = name[0]
             i += 1
 
-    i=0
-    fp = open(labelPath, 'w')
-    for cname in chordNameToNumber:
-        fp.write(cname)
-        fp.write('\n')
-        i += 1
-    fp.close()
+    if len(labelPath)!=0:
+        fp = open(labelPath, 'w')
+        for i in range(0, len(numberToChordName)):
+            cname = numberToChordName[i]
+            fp.write(cname)
+            fp.write('\n')
+            i += 1
+        fp.close()
 
     i=0
     fp = open(datasetPath, 'w')
@@ -78,11 +90,9 @@ def generate(wavDirPath, labelPath, datasetPath):
         print('\r' + str((int)(i * 100 / (len(f)-1))) + ' % ', end='') 
         name = fname.split('_')
         path = wavDirPath + '/' + fname
-        freq = wav_start_to_freq(path)
-        fp.write('%d' % (chordNameToNumber[ name[0] ]))
-        for v in freq:
-            fp.write(',%f' % (v))
-        fp.write('\n')
+        labelNumber = chordNameToNumber[ name[0] ]
+        writeLine(fp, labelNumber, wav_pos_to_freq(path, 0))
+        writeLine(fp, labelNumber, wav_pos_to_freq(path, 44100))
         i += 1
     fp.close()
     print('done')

@@ -59,8 +59,10 @@ def train_svc(X_train, X_test, y_train, y_test, savePath):
     classifier.fit(X_train, y_train)
     pickle.dump(classifier, open(savePath, 'wb'))
     y_pred = classifier.predict(X_test)
-    score = f1_score(y_test, y_pred, average='weighted')
-    return score
+    print('len y_test=' + len(y_test) + ', len y_pred=' + len(y_pred))
+    #score = f1_score(y_test, y_pred, average='weighted')
+    #return score
+    return 0
 
 def train(datasetPath, modelSavePath):
     print('reading file...')
@@ -77,11 +79,11 @@ def train(datasetPath, modelSavePath):
     pred = Predictor()
     pred.learn(X_train, y_train)
     
-    y_pred = pred.predict(X_test)
+    y_pred = pred.predict1(X_test)
     score = f1_score(y_test, y_pred, average='weighted')
     print('score = ', score)
-
     pred.save(modelSavePath)
+    return score
 
 def predict(modelPath, labelPath, wavPath):
     lf = open(labelPath, 'r')
@@ -102,9 +104,11 @@ def predict(modelPath, labelPath, wavPath):
 
     rate, dataAll = wavfile.read(wavPath,True)
 
-    nPred = (int)(len(dataAll) / N)
+    print('Time        Chord   Confidence');
+
+    nPred = (int)(len(dataAll) / FR)
     for t in range(0,nPred):
-        data = dataAll[t*N:(t+1)*N]
+        data = dataAll[t*FR:t*FR+N]
 
         # 16bit int format -> float64
         x=data.astype(np.float)
@@ -125,10 +129,13 @@ def predict(modelPath, labelPath, wavPath):
         xIn = normalizePositiveArray(xfs)
 
         xInR = np.reshape(xIn,(1,-1))
-        ypred = pred.predict(xInR)
+        (ypred, conf) = pred.predict(xInR)
 
         ypredI = int(ypred)
 
         #print('', ypredI)
-        print('', label[ypredI])
+        if conf.max() >= 0:
+            print('%3d:%02d %10s %6.2f' % ((int)(t/60), t%60, label[ypredI], conf.max()))
+        #else:
+        #    print('%3d:%02d ?' % ((int)(t/60), t%60))
 

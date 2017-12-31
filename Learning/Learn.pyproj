@@ -22,6 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ConcatFiles.py" />
     <Compile Include="GenerateDataset2.py">
       <SubType>Code</SubType>
     </Compile>
@@ -29,9 +30,8 @@
     <Compile Include="Predictor.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Run.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="RunLearning.py" />
+    <Compile Include="RunPredict.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
