@@ -4,14 +4,17 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>02ac2d40-5e73-4853-9a46-37ae83cd7550</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Run.py</StartupFile>
+    <StartupFile>RunPredict.py</StartupFile>
     <SearchPath>
     </SearchPath>
-    <WorkingDirectory>C:\work\FourPartHarmony2\ChordEnumerator</WorkingDirectory>
+    <WorkingDirectory>C:\work\FourPartHarmony2\Learning</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PythonApplication1</Name>
     <RootNamespace>PythonApplication1</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>funauta.wav</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +34,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RunLearning.py" />
+    <Compile Include="setup.py" />
     <Compile Include="RunPredict.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

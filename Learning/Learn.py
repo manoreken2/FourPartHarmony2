@@ -104,6 +104,14 @@ def predict(modelPath, labelPath, wavPath):
 
     rate, dataAll = wavfile.read(wavPath,True)
 
+    if rate != FR :
+        print('Error: sample rate is not 44.1kHz!')
+        return
+
+    # get channel 0 (left channel in stereo)
+    if dataAll.ndim != 1 :
+        dataAll = dataAll[:,0]
+
     print('Time        Chord   Confidence');
 
     nPred = (int)(len(dataAll) / FR)
